@@ -1,8 +1,8 @@
-# Route Guard
+# Flutter Route Guard
 
 A platform-agnostic Flutter package for guarding routes based on asynchronous state.
 
-`route_guard` makes it easy to protect routes in your Flutter application, handling loading, error, and data states gracefully. It is designed to work with any router, including `go_router`.
+`flutter_route_guard` makes it easy to protect routes in your Flutter application, handling loading, error, and data states gracefully. It is designed to work with any router, including `go_router`.
 
 ## Features
 
@@ -43,9 +43,9 @@ RouteGuard(
 
 ## Installation
 
-Add `route_guard` to your `pubspec.yaml`:
+Add `flutter_route_guard` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  route_guard: ^0.0.1
+  flutter_route_guard: ^0.0.1
 ```

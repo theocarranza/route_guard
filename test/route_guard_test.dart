@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:route_guard/route_guard.dart';
+import 'package:flutter_route_guard/flutter_route_guard.dart';
 
 void main() {
   testWidgets('RouteGuard shows loading widget when loading', (tester) async {
