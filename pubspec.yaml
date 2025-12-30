@@ -1,7 +1,7 @@
 name: route_guard
 description: "A platform-agnostic Flutter package for guarding routes based on asynchronous state."
 version: 0.0.1
-# homepage: https://github.com/username/route_guard
+repository: https://github.com/theocarranza/route_guard
 
 environment:
   sdk: ^3.9.2
