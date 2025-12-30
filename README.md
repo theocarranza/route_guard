@@ -2,12 +2,12 @@
 
 A platform-agnostic Flutter package for guarding routes based on asynchronous state.
 
-`flutter_route_guard` makes it easy to protect routes in your Flutter application, handling loading, error, and data states gracefully. It is designed to work with any router, including `go_router`.
+`flutter_route_guard` makes it easy to protect routes in your Flutter application, handling loading, error, and data states gracefully. It is designed to work with any router.
 
 ## Features
 
 - **Async State Handling**: Built-in support for loading, error, and data states via `GuardAsyncValue`.
-- **Platform Agnostic**: Works with any state management solution (Riverpod, Bloc, Provider, etc.).
+- **Platform Agnostic**: Works with any state management solution.
 - **Flexible Redirection**: Automatically redirects unauthorized users to a fallback path.
 - **Router Independent**: purely widget-based, integrating seamlessly with your existing navigation setup.
 
@@ -33,8 +33,8 @@ RouteGuard(
   currentPath: currentPath, // The current location (from your router)
   fallbackPath: '/login', // Where to go if denied
   onRedirect: (context, path) {
-    // Navigate using your router
-    GoRouter.of(context).go(path);
+    // Navigate using your router, e.g., Navigator.pushNamed(context, path);
+    // or specific router method
   },
   loadingWidget: const CircularProgressIndicator(), // Optional
   child: DashboardScreen(),

@@ -1,3 +1,7 @@
+## 0.0.2
+
+* Added missing documentation for pub.dev score.
+
 ## 0.0.1
 
 * Initial release.
