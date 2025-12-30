@@ -1,3 +1,8 @@
+## 0.0.3
+
+* Added example application.
+* Completed API documentation.
+
 ## 0.0.2
 
 * Added missing documentation for pub.dev score.

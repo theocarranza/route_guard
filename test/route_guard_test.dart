@@ -15,6 +15,7 @@ void main() {
           currentPath: '/',
           onRedirect: (_, __) {},
           loadingWidget: const Text('Loading...'),
+          child: const SizedBox(),
         ),
       ),
     );
@@ -37,6 +38,7 @@ void main() {
           onRedirect: (_, path) {
             redirectedTo = path;
           },
+          child: const SizedBox(),
         ),
       ),
     );
@@ -62,6 +64,7 @@ void main() {
             onRedirect: (_, path) {
               redirectedTo = path;
             },
+            child: const SizedBox(),
           ),
         ),
       );
@@ -88,6 +91,7 @@ void main() {
             onRedirect: (_, path) {
               redirected = true;
             },
+            child: const SizedBox(),
           ),
         ),
       );

@@ -1,5 +1,9 @@
 /// A platform-agnostic representation of an asynchronous value state.
-/// This allows the RouteGuard to be used with any state management solution.
+///
+/// This library provides the sealed class [GuardAsyncValue] and its subclasses
+/// for handling data, loading, and error states.
+library;
+
 sealed class GuardAsyncValue<T> {
   /// Abstract constant constructor.
   const GuardAsyncValue();

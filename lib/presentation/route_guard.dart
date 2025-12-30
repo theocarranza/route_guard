@@ -1,3 +1,6 @@
+/// This library provides the [RouteGuard] widget.
+library;
+
 import 'package:flutter/material.dart';
 import '../domain/guard_async_value.dart';
 
@@ -29,12 +32,24 @@ class RouteGuard extends StatelessWidget {
   final Widget Function(Object error, StackTrace? stackTrace)?
   errorWidgetBuilder;
 
+  /// The widget to display if access is granted.
+  final Widget child;
+
+  /// Creates a [RouteGuard].
+  ///
+  /// [state] is the async value determining access.
+  /// [fallbackPath] is where to redirect if access is denied.
+  /// [destinationPath] is the guarded path.
+  /// [currentPath] is the current location.
+  /// [onRedirect] handles the navigation logic.
+  /// [child] is the protected content.
   const RouteGuard({
     required this.state,
     required this.fallbackPath,
     required this.destinationPath,
     required this.currentPath,
     required this.onRedirect,
+    required this.child,
     this.loadingWidget,
     this.errorWidgetBuilder,
     super.key,
@@ -53,6 +68,13 @@ class RouteGuard extends StatelessWidget {
 
       case GuardAsyncData(value: final canActivate):
         _onCheck(context, canActivate);
+        // Only show child if activated, otherwise we are redirecting anyway.
+        // We can return SizedBox.shrink() if failed, but for better UX preventing flash
+        // we should probably just return child only if canActivate is true.
+        // But _onCheck checks logic.
+        if (canActivate) {
+          return child;
+        }
         return const SizedBox.shrink();
     }
   }
