@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_route_guard/flutter_route_guard.dart';
+import 'package:example/core/router/route_parser.dart';
+import 'package:example/core/router/router_delegate.dart';
+import 'package:example/core/state/app_state.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,63 +15,24 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  // Simulate an auth state
-  final ValueNotifier<bool> _isLoggedIn = ValueNotifier(false);
+  late final AppState _appState;
+  late MyRouterDelegate _routerDelegate;
+  late MyRouteInformationParser _routeInformationParser;
+
+  @override
+  void initState() {
+    super.initState();
+    _appState = AppState();
+    _routerDelegate = MyRouterDelegate(_appState);
+    _routeInformationParser = MyRouteInformationParser();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: const Text('Route Guard Example')),
-        body: Center(
-          child: ValueListenableBuilder<bool>(
-            valueListenable: _isLoggedIn,
-            builder: (context, isLoggedIn, child) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Logged In: $isLoggedIn'),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () => _isLoggedIn.value = !_isLoggedIn.value,
-                    child: Text(isLoggedIn ? 'Logout' : 'Login'),
-                  ),
-                  const SizedBox(height: 40),
-                  const Text('Guarded Section:'),
-                  const SizedBox(height: 10),
-                  // Example usage of RouteGuard
-                  // In a real app, this would wrap a Page in your router
-                  SizedBox(
-                    height: 100,
-                    width: 200,
-                    child: RouteGuard(
-                      state: isLoggedIn
-                          ? const GuardAsyncData(true)
-                          : const GuardAsyncData(false),
-                      fallbackPath: '/login',
-                      destinationPath: '/protected',
-                      currentPath: '/protected', // Simulating we are here
-                      onRedirect: (ctx, path) {
-                        ScaffoldMessenger.of(ctx).showSnackBar(
-                          SnackBar(content: Text('Redirecting to $path')),
-                        );
-                      },
-                      child: Container(
-                        color: Colors.green,
-                        alignment: Alignment.center,
-                        child: const Text(
-                          'Access Granted!',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
-        ),
-      ),
+    return MaterialApp.router(
+      title: 'Route Guard Demo (Nav 2.0)',
+      routerDelegate: _routerDelegate,
+      routeInformationParser: _routeInformationParser,
     );
   }
 }
