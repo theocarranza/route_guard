@@ -4,17 +4,15 @@ import 'package:flutter_route_guard/flutter_route_guard.dart';
 
 void main() {
   testWidgets('RouteGuard shows loading widget when loading', (tester) async {
-    const state = GuardAsyncLoading<bool>();
+    const state = AsyncLoading<bool>();
     await tester.pumpWidget(
       Directionality(
         textDirection: TextDirection.ltr,
         child: RouteGuard(
           state: state,
-          fallbackPath: '/login',
-          destinationPath: '/home',
-          currentPath: '/',
-          onRedirect: (_, __) {},
+          onRedirect: (_) {},
           loadingWidget: const Text('Loading...'),
+          errorWidgetBuilder: (error, stackTrace) => Text('Error: $error'),
           child: const SizedBox(),
         ),
       ),
@@ -24,80 +22,51 @@ void main() {
   });
 
   testWidgets('RouteGuard redirects to fallback when False', (tester) async {
-    const state = GuardAsyncData(false);
-    String? redirectedTo;
+    const state = AsyncData(false);
+    bool redirected = false;
 
     await tester.pumpWidget(
       Directionality(
         textDirection: TextDirection.ltr,
         child: RouteGuard(
           state: state,
-          fallbackPath: '/login',
-          destinationPath: '/home',
-          currentPath: '/',
-          onRedirect: (_, path) {
-            redirectedTo = path;
+          onRedirect: (_) {
+            redirected = true;
           },
+          loadingWidget: const CircularProgressIndicator(),
+          errorWidgetBuilder: (error, stackTrace) => Text('Error: $error'),
           child: const SizedBox(),
         ),
       ),
     );
     await tester.pumpAndSettle();
 
-    expect(redirectedTo, '/login');
+    expect(redirected, isTrue);
   });
 
-  testWidgets(
-    'RouteGuard redirects to destination when True and not on destination',
-    (tester) async {
-      const state = GuardAsyncData(true);
-      String? redirectedTo;
+  testWidgets('RouteGuard renders child and DOES NOT redirect when True', (
+    tester,
+  ) async {
+    const state = AsyncData(true);
+    bool redirected = false;
 
-      await tester.pumpWidget(
-        Directionality(
-          textDirection: TextDirection.ltr,
-          child: RouteGuard(
-            state: state,
-            fallbackPath: '/login',
-            destinationPath: '/home',
-            currentPath: '/',
-            onRedirect: (_, path) {
-              redirectedTo = path;
-            },
-            child: const SizedBox(),
-          ),
+    await tester.pumpWidget(
+      Directionality(
+        textDirection: TextDirection.ltr,
+        child: RouteGuard(
+          state: state,
+          onRedirect: (_) {
+            redirected = true;
+          },
+          loadingWidget: const CircularProgressIndicator(),
+          errorWidgetBuilder: (error, stackTrace) => Text('Error: $error'),
+          child: const Text('Protected Content'),
         ),
-      );
-      await tester.pumpAndSettle();
+      ),
+    );
+    await tester.pumpAndSettle();
 
-      expect(redirectedTo, '/home');
-    },
-  );
-
-  testWidgets(
-    'RouteGuard DOES NOT redirect when True and ALREADY on destination',
-    (tester) async {
-      const state = GuardAsyncData(true);
-      bool redirected = false;
-
-      await tester.pumpWidget(
-        Directionality(
-          textDirection: TextDirection.ltr,
-          child: RouteGuard(
-            state: state,
-            fallbackPath: '/login',
-            destinationPath: '/home',
-            currentPath: '/home',
-            onRedirect: (_, path) {
-              redirected = true;
-            },
-            child: const SizedBox(),
-          ),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      expect(redirected, isFalse);
-    },
-  );
+    expect(find.text('Protected Content'), findsOneWidget);
+    expect(redirected, isFalse);
+  });
 }
