@@ -2,12 +2,12 @@
 library;
 
 import 'package:flutter/material.dart';
-import '../domain/guard_async_value.dart';
+import '../domain/base_async_value.dart';
 
 /// A widget that guards a route based on the provided [state].
 ///
-/// If [state] is [AsyncData] with `false`, it redirects to [fallbackPath].
-/// If [state] is [AsyncData] with `true`, it ensures the user is on [destinationPath].
+/// If [state] is [BaseAsyncData] with `false`, it redirects to [fallbackPath].
+/// If [state] is [BaseAsyncData] with `true`, it ensures the user is on [destinationPath].
 class RouteGuard extends StatelessWidget {
   /// The current state of the guard check.
   final BaseAsyncValue<bool> state;
@@ -42,12 +42,12 @@ class RouteGuard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return switch (state) {
-      AsyncLoading() => loadingWidget,
-      AsyncError(:final error, :final stackTrace) => errorWidgetBuilder(
+      BaseAsyncLoading() => loadingWidget,
+      BaseAsyncError(:final error, :final stackTrace) => errorWidgetBuilder(
         error,
         stackTrace,
       ),
-      AsyncData(:final value) => _onCheck(
+      BaseAsyncData(:final value) => _onCheck(
         context,
         canActivate: value,
         child: child,

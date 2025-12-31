@@ -4,7 +4,7 @@ import 'package:flutter_route_guard/flutter_route_guard.dart';
 
 void main() {
   testWidgets('RouteGuard shows loading widget when loading', (tester) async {
-    const state = AsyncLoading<bool>();
+    const state = BaseAsyncLoading<bool>();
     await tester.pumpWidget(
       Directionality(
         textDirection: TextDirection.ltr,
@@ -22,7 +22,7 @@ void main() {
   });
 
   testWidgets('RouteGuard redirects to fallback when False', (tester) async {
-    const state = AsyncData(false);
+    const state = BaseAsyncData(false);
     bool redirected = false;
 
     await tester.pumpWidget(
@@ -47,7 +47,7 @@ void main() {
   testWidgets('RouteGuard renders child and DOES NOT redirect when True', (
     tester,
   ) async {
-    const state = AsyncData(true);
+    const state = BaseAsyncData(true);
     bool redirected = false;
 
     await tester.pumpWidget(
@@ -73,7 +73,7 @@ void main() {
   testWidgets('RouteGuard shows error widget when error occurs', (
     tester,
   ) async {
-    final state = AsyncError<bool>(
+    final state = BaseAsyncError<bool>(
       error: Exception('Auth failed'),
       stackTrace: StackTrace.empty,
     );

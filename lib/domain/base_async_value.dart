@@ -10,28 +10,28 @@ sealed class BaseAsyncValue<T> {
 }
 
 /// Represents the data state.
-class AsyncData<T> extends BaseAsyncValue<T> {
+class BaseAsyncData<T> extends BaseAsyncValue<T> {
   /// The current value of the data.
   final T value;
 
-  /// Creates a [AsyncData] with the given [value].
-  const AsyncData(this.value);
+  /// Creates a [BaseAsyncData] with the given [value].
+  const BaseAsyncData(this.value);
 }
 
 /// Represents the loading state.
-class AsyncLoading<T> extends BaseAsyncValue<T> {
-  /// Creates a [AsyncLoading] state.
-  const AsyncLoading();
+class BaseAsyncLoading<T> extends BaseAsyncValue<T> {
+  /// Creates a [BaseAsyncLoading] state.
+  const BaseAsyncLoading();
 }
 
 /// Represents the error state.
-class AsyncError<T> extends BaseAsyncValue<T> {
+class BaseAsyncError<T> extends BaseAsyncValue<T> {
   /// The error that occurred.
   final Object error;
 
   /// The stack trace associated with the error, if any.
   final StackTrace? stackTrace;
 
-  /// Creates a [AsyncError] with the given [error] and optional [stackTrace].
-  const AsyncError({required this.error, this.stackTrace});
+  /// Creates a [BaseAsyncError] with the given [error] and optional [stackTrace].
+  const BaseAsyncError({required this.error, this.stackTrace});
 }

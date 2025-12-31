@@ -2,7 +2,7 @@ import 'package:example/core/router/route_path.dart';
 import 'package:example/core/state/app_state.dart';
 import 'package:example/features/auth/sign_in/sign_in_page_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_route_guard/domain/guard_async_value.dart';
+import 'package:flutter_route_guard/domain/base_async_value.dart';
 import 'package:flutter_route_guard/presentation/route_guard.dart';
 
 class SignInPageRoute extends MaterialPageRoute {
@@ -24,7 +24,9 @@ class SignInPageRouteGuard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RouteGuard(
-      state: state.isLoggedIn ? const AsyncData(false) : const AsyncData(true),
+      state: state.isLoggedIn
+          ? const BaseAsyncData(false)
+          : const BaseAsyncData(true),
       onRedirect: (context) {
         Router.of(context).routerDelegate.setNewRoutePath(MyRoutePath('/home'));
       },

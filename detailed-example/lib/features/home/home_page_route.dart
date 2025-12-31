@@ -13,8 +13,8 @@ class HomePageRouteGuard extends StatelessWidget {
   Widget build(BuildContext context) {
     return RouteGuard(
       state: appState.isLoggedIn
-          ? const AsyncData(true)
-          : const AsyncData(false),
+          ? const BaseAsyncData(true)
+          : const BaseAsyncData(false),
       loadingWidget: const Center(child: CircularProgressIndicator()),
       errorWidgetBuilder: (error, stackTrace) {
         return const Center(child: Text('Error'));

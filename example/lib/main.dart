@@ -348,8 +348,8 @@ class DashboardScreen extends StatelessWidget {
     // RouteGuard checks auth state before showing content.
     return RouteGuard(
       state: authState.isLoggedIn
-          ? const AsyncData(true)
-          : const AsyncData(false),
+          ? const BaseAsyncData(true)
+          : const BaseAsyncData(false),
       loadingWidget: const Center(child: CircularProgressIndicator()),
       errorWidgetBuilder: (error, _) => Center(child: Text('Error: $error')),
       onRedirect: (ctx) {

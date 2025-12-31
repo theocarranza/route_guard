@@ -25,14 +25,14 @@ void main() {
 
     // 3. State -> False (Auth Failed)
     // Should redirect to /login
-    delegate.setGuardState(const AsyncData(false));
+    delegate.setGuardState(const BaseAsyncData(false));
     await tester.pumpAndSettle();
     expect(find.text('Login Screen'), findsOneWidget);
     expect(delegate.currentConfiguration.path, '/login');
 
     // 4. Navigate back to Protected Route, checking State -> True (Auth Success)
     // Should stay on /protected and show content
-    delegate.setGuardState(const AsyncData(true));
+    delegate.setGuardState(const BaseAsyncData(true));
     delegate.setPath('/protected');
     await tester.pumpAndSettle();
     expect(find.text('Protected Content'), findsOneWidget);
@@ -67,7 +67,7 @@ class TestRouterDelegate extends RouterDelegate<Destination>
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   Destination _currentDestination = Destination('/');
-  BaseAsyncValue<bool> _guardState = const AsyncLoading();
+  BaseAsyncValue<bool> _guardState = const BaseAsyncLoading();
 
   void setPath(String path) {
     _currentDestination = Destination(path);
