@@ -1,3 +1,10 @@
+## 0.0.4
+
+* Improved examples with didactic welcome screens.
+* Material Design 3 layout for all screens.
+* Left-aligned bullet points for better readability.
+* Comprehensive test coverage including error state.
+
 ## 0.0.3
 
 * Added example application.
