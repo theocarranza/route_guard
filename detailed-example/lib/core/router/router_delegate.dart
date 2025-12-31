@@ -1,5 +1,6 @@
 import 'package:example/features/auth/sign_in/sign_in_page_route.dart';
 import 'package:example/features/auth/sign_out/sign_out_page_route.dart';
+import 'package:example/features/welcome/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:example/core/router/route_path.dart';
 import 'package:example/core/state/app_state.dart';
@@ -51,15 +52,15 @@ class MyRouterDelegate extends RouterDelegate<MyRoutePath>
         key: const ValueKey('/home'),
         child: HomePageRouteGuard(appState: appState),
       ),
-      '/denied' => MaterialPage<void>(
+      '/denied' => const MaterialPage<void>(
         name: '/denied',
-        key: const ValueKey('/denied'),
-        child: const DeniedScreen(),
+        key: ValueKey('/denied'),
+        child: DeniedScreen(),
       ),
-      _ => MaterialPage<void>(
-        name: '/sign-in',
-        key: const ValueKey('/sign-in'),
-        child: SignInPageRouteGuard(state: appState),
+      _ => const MaterialPage<void>(
+        name: '/',
+        key: ValueKey('/'),
+        child: WelcomeScreen(),
       ),
     };
   }

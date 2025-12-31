@@ -30,7 +30,9 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'Route Guard Demo (Nav 2.0)',
+      debugShowCheckedModeBanner: false,
+      title: 'Route Guard (Detailed)',
+      theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.indigo),
       routerDelegate: _routerDelegate,
       routeInformationParser: _routeInformationParser,
     );
