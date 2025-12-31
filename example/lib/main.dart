@@ -193,12 +193,30 @@ class WelcomeScreen extends StatelessWidget {
                     const SizedBox(height: 16),
                     Text(
                       'This example demonstrates how to protect routes using '
-                      'the RouteGuard widget with Navigator 2.0.\n\n'
-                      '• Try accessing /dashboard without logging in\n'
-                      '• The RouteGuard will redirect you to /denied\n'
-                      '• Login first, then access the protected route',
+                      'the RouteGuard widget with Navigator 2.0.',
                       style: theme.textTheme.bodyLarge,
                       textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 16),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          '• Try accessing /dashboard without logging in',
+                          style: theme.textTheme.bodyLarge,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          '• The RouteGuard will redirect you to /denied',
+                          style: theme.textTheme.bodyLarge,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          '• Login first, then access the protected route',
+                          style: theme.textTheme.bodyLarge,
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 32),
                     Row(

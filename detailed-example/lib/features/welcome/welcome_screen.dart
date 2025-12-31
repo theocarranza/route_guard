@@ -43,12 +43,30 @@ class WelcomeScreen extends StatelessWidget {
                     const SizedBox(height: 16),
                     Text(
                       'This is the detailed example showing how to organize '
-                      'RouteGuard in a multi-file architecture.\n\n'
-                      '• Each route has its own guard file\n'
-                      '• Screens are separated from guard logic\n'
-                      '• Router delegate manages page navigation',
+                      'RouteGuard in a multi-file architecture.',
                       style: theme.textTheme.bodyLarge,
                       textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 16),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          '• Each route has its own guard file',
+                          style: theme.textTheme.bodyLarge,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          '• Screens are separated from guard logic',
+                          style: theme.textTheme.bodyLarge,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          '• Router delegate manages page navigation',
+                          style: theme.textTheme.bodyLarge,
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 32),
                     Row(

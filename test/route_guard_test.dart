@@ -69,4 +69,28 @@ void main() {
     expect(find.text('Protected Content'), findsOneWidget);
     expect(redirected, isFalse);
   });
+
+  testWidgets('RouteGuard shows error widget when error occurs', (
+    tester,
+  ) async {
+    final state = AsyncError<bool>(
+      error: Exception('Auth failed'),
+      stackTrace: StackTrace.empty,
+    );
+
+    await tester.pumpWidget(
+      Directionality(
+        textDirection: TextDirection.ltr,
+        child: RouteGuard(
+          state: state,
+          onRedirect: (_) {},
+          loadingWidget: const CircularProgressIndicator(),
+          errorWidgetBuilder: (error, stackTrace) => Text('Error: $error'),
+          child: const SizedBox(),
+        ),
+      ),
+    );
+
+    expect(find.textContaining('Error:'), findsOneWidget);
+  });
 }
