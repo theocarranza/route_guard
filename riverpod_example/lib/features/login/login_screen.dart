@@ -4,9 +4,13 @@ import 'package:flutter_route_guard/flutter_route_guard.dart';
 import 'package:riverpod_example/core/state/auth_provider.dart';
 import 'package:riverpod_example/core/utils/async_value_extension.dart';
 import 'package:riverpod_example/core/router/route_path.dart';
+import 'package:riverpod_example/core/widgets/route_breadcrumb.dart';
 
 class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
+  
+  // ... (rest of class)
+
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -49,6 +53,7 @@ class LoginScreen extends ConsumerWidget {
             },
           ),
         ),
+        bottomNavigationBar: const RouteBreadcrumb(),
         body: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 400),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:riverpod_example/core/router/route_path.dart';
+import 'package:riverpod_example/core/widgets/route_breadcrumb.dart';
 
 class DeniedScreen extends StatelessWidget {
   const DeniedScreen({super.key});
@@ -21,6 +22,7 @@ class DeniedScreen extends StatelessWidget {
           },
         ),
       ),
+      bottomNavigationBar: const RouteBreadcrumb(),
       body: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 500),

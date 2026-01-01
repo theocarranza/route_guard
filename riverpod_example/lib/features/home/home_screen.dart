@@ -4,6 +4,7 @@ import 'package:flutter_route_guard/flutter_route_guard.dart';
 import 'package:riverpod_example/core/state/auth_provider.dart';
 import 'package:riverpod_example/core/utils/async_value_extension.dart';
 import 'package:riverpod_example/core/router/route_path.dart';
+import 'package:riverpod_example/core/widgets/route_breadcrumb.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -59,6 +60,7 @@ class HomeScreen extends ConsumerWidget {
               ),
           ],
         ),
+        bottomNavigationBar: const RouteBreadcrumb(),
         body: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 600),
