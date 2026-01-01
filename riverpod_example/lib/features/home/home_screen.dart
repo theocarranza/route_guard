@@ -35,6 +35,12 @@ class HomeScreen extends ConsumerWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Home Page'),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Router.of(context).routerDelegate.setNewRoutePath(AppRoutePath('/'));
+            },
+          ),
           actions: [
             if (authState.isLoading)
               const Padding(

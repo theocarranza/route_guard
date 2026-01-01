@@ -34,7 +34,15 @@ class LoginScreen extends ConsumerWidget {
         body: Center(child: Text('Error: $error')),
       ),
       child: Scaffold(
-        appBar: AppBar(title: const Text('Login Page')),
+        appBar: AppBar(
+          title: const Text('Login Page'),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Router.of(context).routerDelegate.setNewRoutePath(AppRoutePath('/'));
+            },
+          ),
+        ),
         body: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
