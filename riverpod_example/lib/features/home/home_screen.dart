@@ -68,7 +68,7 @@ class HomeScreen extends ConsumerWidget {
               padding: const EdgeInsets.all(24),
               child: Card(
                 elevation: 0,
-                color: Theme.of(context).colorScheme.primaryContainer,
+                color: Theme.of(context).colorScheme.surfaceContainerHighest,
                 child: Padding(
                   padding: const EdgeInsets.all(32),
                   child: Column(
@@ -83,23 +83,14 @@ class HomeScreen extends ConsumerWidget {
                       Text(
                         'Protected Content',
                         style: Theme.of(context).textTheme.headlineMedium
-                            ?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.onPrimaryContainer,
-                            ),
+                            ?.copyWith(fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 16),
                       Text(
                         'Try "Refresh Session". The RouteGuard should NOT show the full-screen loader,\n'
                         'because our extension maps "Loading with Data" to "Data".\n'
                         'Instead, you should see a spinner in the AppBar.',
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.onPrimaryContainer,
-                        ),
+                        style: Theme.of(context).textTheme.bodyLarge,
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 24),

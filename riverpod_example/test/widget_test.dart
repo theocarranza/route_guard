@@ -31,11 +31,14 @@ void main() {
     await tester.pumpAndSettle();
 
     // Verify Login Screen
-    expect(find.text('Login Page'), findsOneWidget);
-    expect(find.text('You are NOT logged in.'), findsOneWidget);
+    expect(
+      find.descendant(of: find.byType(AppBar), matching: find.text('Sign In')),
+      findsOneWidget,
+    );
+    expect(find.textContaining('This screen is guarded'), findsOneWidget);
 
     // 3. Perform Login
-    await tester.tap(find.text('Login'));
+    await tester.tap(find.byIcon(Icons.login));
     // Trigger the loading state (async guard)
     await tester.pump();
     // Wait for the simulated delay in AuthNotifier.login
@@ -43,16 +46,22 @@ void main() {
     await tester.pumpAndSettle();
 
     // Verify Redirect to Home
-    expect(find.text('Home Page'), findsOneWidget);
-    expect(find.text('Welcome! You are logged in.'), findsOneWidget);
+    expect(
+      find.descendant(of: find.byType(AppBar), matching: find.text('Home')),
+      findsOneWidget,
+    );
+    expect(find.text('Protected Content'), findsOneWidget);
 
     // 4. Test Background Refresh (The "Soft Spot" Fix)
     // Tap Refresh Button
     await tester.tap(find.text('Refresh Session (Background)'));
     await tester.pump(); // Trigger the action
 
-    // Check that we are STILL on Home Page during the "loading" phase of the refresh
-    expect(find.text('Home Page'), findsOneWidget);
+    // Check that we are STILL on Home during the "loading" phase of the refresh
+    expect(
+      find.descendant(of: find.byType(AppBar), matching: find.text('Home')),
+      findsOneWidget,
+    );
 
     // Check for the "Loading with Data" mapping result (Debug Card)
     expect(find.textContaining('Data (Access Granted)'), findsOneWidget);
@@ -63,7 +72,10 @@ void main() {
     await tester.pumpAndSettle();
 
     // Still on Home
-    expect(find.text('Home Page'), findsOneWidget);
+    expect(
+      find.descendant(of: find.byType(AppBar), matching: find.text('Home')),
+      findsOneWidget,
+    );
 
     // 5. Perform Logout
     await tester.tap(find.text('Logout'));
@@ -73,7 +85,10 @@ void main() {
     await tester.pumpAndSettle();
 
     // Verify Redirect back to Login
-    expect(find.text('Login Page'), findsOneWidget);
+    expect(
+      find.descendant(of: find.byType(AppBar), matching: find.text('Sign In')),
+      findsOneWidget,
+    );
 
     // Reset size
     addTearDown(tester.view.resetPhysicalSize);

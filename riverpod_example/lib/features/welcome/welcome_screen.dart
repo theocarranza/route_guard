@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_route_guard/flutter_route_guard.dart';
+import 'package:riverpod_example/core/state/auth_provider.dart';
+import 'package:riverpod_example/core/utils/async_value_extension.dart';
 import 'package:riverpod_example/core/router/route_path.dart';
 import 'package:riverpod_example/core/widgets/route_breadcrumb.dart';
 
@@ -9,72 +12,95 @@ class WelcomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final authState = ref.watch(authProvider);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Riverpod RouteGuard'),
-        centerTitle: true,
+    // Guard Logic: Can Activate if !isLoggedIn
+    final guardState = switch (authState.toBaseAsyncValue()) {
+      BaseAsyncData(value: final isLoggedIn) => BaseAsyncData(!isLoggedIn),
+      BaseAsyncLoading() => const BaseAsyncLoading<bool>(),
+      BaseAsyncError(:final error, :final stackTrace) => BaseAsyncError<bool>(
+        error: error,
+        stackTrace: stackTrace,
       ),
-      bottomNavigationBar: const RouteBreadcrumb(),
-      body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 600),
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Card(
-              elevation: 0,
-              color: theme.colorScheme.surfaceContainerHighest,
-              child: Padding(
-                padding: const EdgeInsets.all(32),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.security,
-                      size: 72,
-                      color: theme.colorScheme.primary,
-                    ),
-                    const SizedBox(height: 24),
-                    Text(
-                      'Welcome to Riverpod Guard',
-                      style: theme.textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+    };
+
+    return RouteGuard(
+      state: guardState,
+      onRedirect: (context) {
+        // If logged in (guardState is false), redirect to Home.
+        Router.of(context).routerDelegate.setNewRoutePath(AppRoutePath('/home'));
+      },
+      loadingWidget: const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      ),
+      errorWidgetBuilder: (error, stackTrace) =>
+          Scaffold(body: Center(child: Text('Error: $error'))),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Riverpod RouteGuard'),
+          centerTitle: true,
+        ),
+        bottomNavigationBar: const RouteBreadcrumb(),
+        body: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 600),
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Card(
+                elevation: 0,
+                color: theme.colorScheme.surfaceContainerHighest,
+                child: Padding(
+                  padding: const EdgeInsets.all(32),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.security,
+                        size: 72,
+                        color: theme.colorScheme.primary,
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'This example demonstrates proper Riverpod integration '
-                      'with flutter_route_guard, handling background refreshes gracefully.',
-                      style: theme.textTheme.bodyLarge,
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 32),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        FilledButton.icon(
-                          onPressed: () {
-                            Router.of(context).routerDelegate.setNewRoutePath(
-                              AppRoutePath('/login'),
-                            );
-                          },
-                          icon: const Icon(Icons.login),
-                          label: const Text('Go to Sign In'),
+                      const SizedBox(height: 24),
+                      Text(
+                        'Welcome to Riverpod Guard',
+                        style: theme.textTheme.headlineMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
                         ),
-                        const SizedBox(width: 16),
-                        OutlinedButton.icon(
-                          onPressed: () {
-                            Router.of(context).routerDelegate.setNewRoutePath(
-                              AppRoutePath('/home'),
-                            );
-                          },
-                          icon: const Icon(Icons.home),
-                          label: const Text('Try /home'),
-                        ),
-                      ],
-                    ),
-                  ],
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'This example demonstrates proper Riverpod integration '
+                        'with flutter_route_guard, handling background refreshes gracefully.',
+                        style: theme.textTheme.bodyLarge,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 32),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          FilledButton.icon(
+                            onPressed: () {
+                              Router.of(context).routerDelegate.setNewRoutePath(
+                                AppRoutePath('/login'),
+                              );
+                            },
+                            icon: const Icon(Icons.login),
+                            label: const Text('Go to Sign In'),
+                          ),
+                          const SizedBox(width: 16),
+                          OutlinedButton.icon(
+                            onPressed: () {
+                              Router.of(context).routerDelegate.setNewRoutePath(
+                                AppRoutePath('/home'),
+                              );
+                            },
+                            icon: const Icon(Icons.home),
+                            label: const Text('Try /home'),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
