@@ -1,18 +1,22 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+// Simulates a persistent storage (e.g., SharedPreferences or a server-side session)
+bool _mockPersistence = false;
+
 class AuthNotifier extends AsyncNotifier<bool> {
   @override
   Future<bool> build() async {
-    // Simulate checking local storage or API on startup
+    // Simulate network delay for checking session
     await Future.delayed(const Duration(seconds: 1));
-    return false; // Initially logged out
+    return _mockPersistence;
   }
 
   Future<void> login() async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       await Future.delayed(const Duration(milliseconds: 500));
+      _mockPersistence = true;
       return true;
     });
   }
@@ -21,6 +25,7 @@ class AuthNotifier extends AsyncNotifier<bool> {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       await Future.delayed(const Duration(milliseconds: 500));
+      _mockPersistence = false;
       return false;
     });
   }

@@ -42,7 +42,7 @@ class HomeScreen extends ConsumerWidget {
                 child: SizedBox(
                   width: 16, 
                   height: 16, 
-                  child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white)
+                  child: CircularProgressIndicator(strokeWidth: 2)
                 ),
               ),
           ],
@@ -58,6 +58,28 @@ class HomeScreen extends ConsumerWidget {
                 'because our extension maps "Loading with Data" to "Data".\n' 
                 'Instead, you should see a spinner in the AppBar.',
                 textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 24),
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 600),
+                child: Card(
+                  color: Colors.grey.shade200,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      children: [
+                        const Text('DEBUG STATE INFO', style: TextStyle(fontWeight: FontWeight.bold)),
+                        const Divider(),
+                        Text('Riverpod State: ${authState.isLoading ? "Loading ⏳" : "Idle ✅"}'),
+                        Text('Has Data: ${authState.hasValue}'),
+                        const SizedBox(height: 8),
+                        const Text('⬇️ Mapped To ⬇️'),
+                        const SizedBox(height: 8),
+                        Text('RouteGuard State: ${guardState is BaseAsyncData ? "Data (Access Granted) 🟢" : "Loading (Blocked) 🔴"}'),
+                      ],
+                    ),
+                  ),
+                ),
               ),
               const SizedBox(height: 24),
               ElevatedButton(

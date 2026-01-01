@@ -5,7 +5,6 @@ import 'package:riverpod_example/features/login/login_screen.dart';
 
 class AppRouterDelegate extends RouterDelegate<AppRoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<AppRoutePath> {
-  
   @override
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
