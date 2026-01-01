@@ -63,7 +63,7 @@ class HomeScreen extends ConsumerWidget {
         bottomNavigationBar: const RouteBreadcrumb(),
         body: Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 600),
+            constraints: const BoxConstraints(maxWidth: 700),
             child: Padding(
               padding: const EdgeInsets.all(24),
               child: Card(
