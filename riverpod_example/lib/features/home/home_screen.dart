@@ -37,7 +37,8 @@ class HomeScreen extends ConsumerWidget {
           Scaffold(body: Center(child: Text('Error: $error'))),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Home Page'),
+          title: const Text('Home'),
+          centerTitle: true,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
@@ -59,57 +60,102 @@ class HomeScreen extends ConsumerWidget {
           ],
         ),
         body: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text('Welcome! You are logged in.'),
-              const SizedBox(height: 8),
-              const Text(
-                'Try "Refresh Session". The RouteGuard should NOT show the full-screen loader,\n'
-                'because our extension maps "Loading with Data" to "Data".\n'
-                'Instead, you should see a spinner in the AppBar.',
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 24),
-              ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 600),
-                child: Card(
-                  color: Colors.grey.shade200,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      children: [
-                        const Text(
-                          'DEBUG STATE INFO',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 600),
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Card(
+                elevation: 0,
+                color: Theme.of(context).colorScheme.primaryContainer,
+                child: Padding(
+                  padding: const EdgeInsets.all(32),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.verified_user,
+                        size: 72,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      const SizedBox(height: 24),
+                      Text(
+                        'Protected Content',
+                        style: Theme.of(context).textTheme.headlineMedium
+                            ?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onPrimaryContainer,
+                            ),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Try "Refresh Session". The RouteGuard should NOT show the full-screen loader,\n'
+                        'because our extension maps "Loading with Data" to "Data".\n'
+                        'Instead, you should see a spinner in the AppBar.',
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onPrimaryContainer,
                         ),
-                        const Divider(),
-                        Text(
-                          'Riverpod State: ${authState.isLoading ? "Loading ⏳" : "Idle ✅"}',
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 24),
+                      Card(
+                        elevation: 0,
+                        color: Theme.of(context).colorScheme.surface,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            children: [
+                              Text(
+                                'DEBUG STATE INFO',
+                                style: Theme.of(context).textTheme.labelLarge
+                                    ?.copyWith(fontWeight: FontWeight.bold),
+                              ),
+                              const Divider(),
+                              Text(
+                                'Riverpod State: ${authState.isLoading ? "Loading ⏳" : "Idle ✅"}',
+                                style: const TextStyle(fontFamily: 'monospace'),
+                              ),
+                              Text(
+                                'Has Data: ${authState.hasValue}',
+                                style: const TextStyle(fontFamily: 'monospace'),
+                              ),
+                              const SizedBox(height: 8),
+                              const Text('⬇️ Mapped To ⬇️'),
+                              const SizedBox(height: 8),
+                              Text(
+                                'RouteGuard State: ${guardState is BaseAsyncData ? "Data (Access Granted) 🟢" : "Loading (Blocked) 🔴"}',
+                                style: const TextStyle(
+                                  fontFamily: 'monospace',
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        Text('Has Data: ${authState.hasValue}'),
-                        const SizedBox(height: 8),
-                        const Text('⬇️ Mapped To ⬇️'),
-                        const SizedBox(height: 8),
-                        Text(
-                          'RouteGuard State: ${guardState is BaseAsyncData ? "Data (Access Granted) 🟢" : "Loading (Blocked) 🔴"}',
-                        ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(height: 24),
+                      FilledButton.icon(
+                        onPressed:
+                            () =>
+                                ref.read(authProvider.notifier).refreshCheck(),
+                        icon: const Icon(Icons.refresh),
+                        label: const Text('Refresh Session (Background)'),
+                      ),
+                      const SizedBox(height: 12),
+                      OutlinedButton.icon(
+                        onPressed:
+                            () => ref.read(authProvider.notifier).logout(),
+                        icon: const Icon(Icons.logout),
+                        label: const Text('Logout'),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: () => ref.read(authProvider.notifier).refreshCheck(),
-                child: const Text('Refresh Session (Background)'),
-              ),
-              const SizedBox(height: 16),
-              OutlinedButton(
-                onPressed: () => ref.read(authProvider.notifier).logout(),
-                child: const Text('Logout'),
-              ),
-            ],
+            ),
           ),
         ),
       ),
