@@ -1,3 +1,7 @@
+## 0.0.5
+
+* Refactored examples and improved internal routing logic.
+
 ## 0.0.4
 
 * Improved examples with didactic welcome screens.
