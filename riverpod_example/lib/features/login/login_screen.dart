@@ -81,7 +81,8 @@ class LoginScreen extends ConsumerWidget {
                       const SizedBox(height: 16),
                       Text(
                         'This screen is guarded. It only allows access if you are NOT logged in.\n\n'
-                        'State: ${guardState is BaseAsyncData ? "Access Granted" : "Redirecting..."}',
+                        'Auth State: ${authState.isLoading ? "Loading..." : (authState.value == true ? "Logged In" : "Logged Out")}\n'
+                        'Guard State (canActivate): ${guardState is BaseAsyncData ? (guardState as BaseAsyncData<bool>).value : "Loading..."}',
                         style: Theme.of(context).textTheme.bodyMedium,
                         textAlign: TextAlign.center,
                       ),
