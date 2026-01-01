@@ -29,15 +29,17 @@ class AuthNotifier extends AsyncNotifier<bool> {
       return false;
     });
   }
-  
+
   /// Simulates a background token refresh.
   /// This helps demonstrate the 'refreshing' state where we have data but are loading.
   Future<void> refreshCheck() async {
     // This triggers a rebuild, putting the provider in loading state
     // while preserving the previous data (AsyncLoading + hasValue).
-    ref.invalidateSelf(); 
-    await future; 
+    ref.invalidateSelf();
+    await future;
   }
 }
 
-final authProvider = AsyncNotifierProvider<AuthNotifier, bool>(AuthNotifier.new);
+final authProvider = AsyncNotifierProvider<AuthNotifier, bool>(
+  AuthNotifier.new,
+);

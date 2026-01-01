@@ -15,7 +15,9 @@ class DeniedScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Router.of(context).routerDelegate.setNewRoutePath(AppRoutePath('/'));
+            Router.of(
+              context,
+            ).routerDelegate.setNewRoutePath(AppRoutePath('/'));
           },
         ),
       ),
@@ -47,9 +49,9 @@ class DeniedScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'You tried to access a protected route without ' 
-                      'authentication.\n\n' 
-                      'The RouteGuard detected that the auth provider ' 
+                      'You tried to access a protected route without '
+                      'authentication.\n\n'
+                      'The RouteGuard detected that the auth provider '
                       'is not authenticated.',
                       style: theme.textTheme.bodyLarge?.copyWith(
                         color: theme.colorScheme.onErrorContainer,

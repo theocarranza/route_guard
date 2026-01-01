@@ -17,29 +17,34 @@ class LoginScreen extends ConsumerWidget {
     final guardState = switch (authState.toBaseAsyncValue()) {
       BaseAsyncData(value: final isLoggedIn) => BaseAsyncData(!isLoggedIn),
       BaseAsyncLoading() => const BaseAsyncLoading<bool>(),
-      BaseAsyncError(:final error, :final stackTrace) => 
-          BaseAsyncError<bool>(error: error, stackTrace: stackTrace),
+      BaseAsyncError(:final error, :final stackTrace) => BaseAsyncError<bool>(
+        error: error,
+        stackTrace: stackTrace,
+      ),
     };
 
     return RouteGuard(
       state: guardState,
       onRedirect: (context) {
         // If we are logged in (guardState is false), redirect to Home.
-        Router.of(context).routerDelegate.setNewRoutePath(AppRoutePath('/home'));
+        Router.of(
+          context,
+        ).routerDelegate.setNewRoutePath(AppRoutePath('/home'));
       },
       loadingWidget: const Scaffold(
         body: Center(child: CircularProgressIndicator(color: Colors.orange)),
       ),
-      errorWidgetBuilder: (error, stackTrace) => Scaffold(
-        body: Center(child: Text('Error: $error')),
-      ),
+      errorWidgetBuilder: (error, stackTrace) =>
+          Scaffold(body: Center(child: Text('Error: $error'))),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Login Page'),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              Router.of(context).routerDelegate.setNewRoutePath(AppRoutePath('/'));
+              Router.of(
+                context,
+              ).routerDelegate.setNewRoutePath(AppRoutePath('/'));
             },
           ),
         ),

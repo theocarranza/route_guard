@@ -9,10 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod_example/main.dart';
-import 'package:riverpod_example/core/state/auth_provider.dart';
 
 void main() {
-  testWidgets('Riverpod RouteGuard Integration Flow', (WidgetTester tester) async {
+  testWidgets('Riverpod RouteGuard Integration Flow', (
+    WidgetTester tester,
+  ) async {
     // Set a larger surface size
     tester.view.physicalSize = const Size(1200, 1000);
     tester.view.devicePixelRatio = 1.0;
@@ -36,9 +37,9 @@ void main() {
     // 3. Perform Login
     await tester.tap(find.text('Login'));
     // Trigger the loading state (async guard)
-    await tester.pump(); 
+    await tester.pump();
     // Wait for the simulated delay in AuthNotifier.login
-    await tester.pump(const Duration(milliseconds: 600)); 
+    await tester.pump(const Duration(milliseconds: 600));
     await tester.pumpAndSettle();
 
     // Verify Redirect to Home
@@ -52,7 +53,7 @@ void main() {
 
     // Check that we are STILL on Home Page during the "loading" phase of the refresh
     expect(find.text('Home Page'), findsOneWidget);
-    
+
     // Check for the "Loading with Data" mapping result (Debug Card)
     expect(find.textContaining('Data (Access Granted)'), findsOneWidget);
     expect(find.textContaining('Loading (Blocked)'), findsNothing);

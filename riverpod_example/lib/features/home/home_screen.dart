@@ -17,28 +17,33 @@ class HomeScreen extends ConsumerWidget {
     final guardState = switch (authState.toBaseAsyncValue()) {
       BaseAsyncData(value: final isLoggedIn) => BaseAsyncData(isLoggedIn),
       BaseAsyncLoading() => const BaseAsyncLoading<bool>(),
-      BaseAsyncError(:final error, :final stackTrace) => 
-          BaseAsyncError<bool>(error: error, stackTrace: stackTrace),
+      BaseAsyncError(:final error, :final stackTrace) => BaseAsyncError<bool>(
+        error: error,
+        stackTrace: stackTrace,
+      ),
     };
 
     return RouteGuard(
       state: guardState,
       onRedirect: (context) {
-        Router.of(context).routerDelegate.setNewRoutePath(AppRoutePath('/login'));
+        Router.of(
+          context,
+        ).routerDelegate.setNewRoutePath(AppRoutePath('/login'));
       },
       loadingWidget: const Scaffold(
         body: Center(child: CircularProgressIndicator(color: Colors.blue)),
       ),
-      errorWidgetBuilder: (error, stackTrace) => Scaffold(
-        body: Center(child: Text('Error: $error')),
-      ),
+      errorWidgetBuilder: (error, stackTrace) =>
+          Scaffold(body: Center(child: Text('Error: $error'))),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Home Page'),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              Router.of(context).routerDelegate.setNewRoutePath(AppRoutePath('/'));
+              Router.of(
+                context,
+              ).routerDelegate.setNewRoutePath(AppRoutePath('/'));
             },
           ),
           actions: [
@@ -46,9 +51,9 @@ class HomeScreen extends ConsumerWidget {
               const Padding(
                 padding: EdgeInsets.all(16.0),
                 child: SizedBox(
-                  width: 16, 
-                  height: 16, 
-                  child: CircularProgressIndicator(strokeWidth: 2)
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(strokeWidth: 2),
                 ),
               ),
           ],
@@ -60,8 +65,8 @@ class HomeScreen extends ConsumerWidget {
               const Text('Welcome! You are logged in.'),
               const SizedBox(height: 8),
               const Text(
-                'Try "Refresh Session". The RouteGuard should NOT show the full-screen loader,\n' 
-                'because our extension maps "Loading with Data" to "Data".\n' 
+                'Try "Refresh Session". The RouteGuard should NOT show the full-screen loader,\n'
+                'because our extension maps "Loading with Data" to "Data".\n'
                 'Instead, you should see a spinner in the AppBar.',
                 textAlign: TextAlign.center,
               ),
@@ -74,14 +79,21 @@ class HomeScreen extends ConsumerWidget {
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       children: [
-                        const Text('DEBUG STATE INFO', style: TextStyle(fontWeight: FontWeight.bold)),
+                        const Text(
+                          'DEBUG STATE INFO',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
                         const Divider(),
-                        Text('Riverpod State: ${authState.isLoading ? "Loading ⏳" : "Idle ✅"}'),
+                        Text(
+                          'Riverpod State: ${authState.isLoading ? "Loading ⏳" : "Idle ✅"}',
+                        ),
                         Text('Has Data: ${authState.hasValue}'),
                         const SizedBox(height: 8),
                         const Text('⬇️ Mapped To ⬇️'),
                         const SizedBox(height: 8),
-                        Text('RouteGuard State: ${guardState is BaseAsyncData ? "Data (Access Granted) 🟢" : "Loading (Blocked) 🔴"}'),
+                        Text(
+                          'RouteGuard State: ${guardState is BaseAsyncData ? "Data (Access Granted) 🟢" : "Loading (Blocked) 🔴"}',
+                        ),
                       ],
                     ),
                   ),
