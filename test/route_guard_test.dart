@@ -99,7 +99,7 @@ void main() {
   testWidgets('RouteGuard stream mode shows loading before first decision', (
     tester,
   ) async {
-    final controller = StreamController<bool>();
+    final controller = StreamController<bool>.broadcast();
 
     await tester.pumpWidget(
       Directionality(
@@ -137,5 +137,55 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Stream Content'), findsOneWidget);
+  });
+
+  testWidgets('RouteGuard stream mode shows error widget on stream error', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      Directionality(
+        textDirection: TextDirection.ltr,
+        child: RouteGuard.stream(
+          canActivate: Stream<bool>.error(Exception('Stream failed')),
+          onRedirect: (_) {},
+          loadingWidget: const Text('Loading stream...'),
+          errorWidgetBuilder: (error, stackTrace) => Text('Error: $error'),
+          child: const Text('Stream Content'),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.textContaining('Error: Exception: Stream failed'),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('RouteGuard stream mode stops listening after removal', (
+    tester,
+  ) async {
+    final controller = StreamController<bool>.broadcast();
+
+    await tester.pumpWidget(
+      Directionality(
+        textDirection: TextDirection.ltr,
+        child: RouteGuard.stream(
+          canActivate: controller.stream,
+          onRedirect: (_) {},
+          loadingWidget: const Text('Loading stream...'),
+          errorWidgetBuilder: (error, stackTrace) => Text('Error: $error'),
+          child: const Text('Stream Content'),
+        ),
+      ),
+    );
+    await tester.pumpWidget(const SizedBox());
+
+    controller.add(true);
+    await tester.pump();
+
+    expect(find.text('Stream Content'), findsNothing);
+
+    await controller.close();
   });
 }
