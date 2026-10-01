@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_route_guard/domain/base_async_value.dart';
 
-/// Extension to map Riverpod's [AsyncValue] to [BaseAsyncValue] for RouteGuard.
+/// Extension to map Riverpod's [AsyncValue] to [BaseAsyncData] for RouteGuard.
 ///
 /// This implements a "Data Priority" strategy:
 /// 1. If the AsyncValue has data (even if loading or error occurred during refresh),
