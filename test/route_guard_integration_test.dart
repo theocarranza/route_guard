@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_route_guard/flutter_route_guard.dart';
@@ -37,6 +39,32 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Protected Content'), findsOneWidget);
     expect(delegate.currentConfiguration.path, '/protected');
+  });
+
+  testWidgets('Integration: stream RouteGuard activates protected route', (
+    tester,
+  ) async {
+    final controller = StreamController<bool>.broadcast();
+    final delegate = StreamTestRouterDelegate(controller.stream);
+
+    await tester.pumpWidget(
+      MaterialApp.router(
+        routerDelegate: delegate,
+        routeInformationParser: TestRouteInformationParser(),
+      ),
+    );
+
+    delegate.setPath('/protected');
+    await tester.pumpAndSettle();
+    expect(find.text('Loading...'), findsOneWidget);
+
+    controller.add(true);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Protected Content'), findsOneWidget);
+    expect(delegate.currentConfiguration.path, '/protected');
+
+    await controller.close();
   });
 }
 
@@ -116,6 +144,57 @@ class TestRouterDelegate extends RouterDelegate<Destination>
       onDidRemovePage: (page) {
         // Handle page removal
       },
+    );
+  }
+}
+
+class StreamTestRouterDelegate extends RouterDelegate<Destination>
+    with ChangeNotifier, PopNavigatorRouterDelegateMixin<Destination> {
+  StreamTestRouterDelegate(this.guardStream);
+
+  @override
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+  final Stream<bool> guardStream;
+  Destination _currentDestination = Destination('/');
+
+  void setPath(String path) {
+    _currentDestination = Destination(path);
+    notifyListeners();
+  }
+
+  @override
+  Destination get currentConfiguration => _currentDestination;
+
+  @override
+  Future<void> setNewRoutePath(Destination configuration) async {
+    _currentDestination = configuration;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Navigator(
+      key: navigatorKey,
+      pages: [
+        const MaterialPage(child: Text('Home Screen'), key: ValueKey('/')),
+        ...switch (_currentDestination.path) {
+          '/protected' => [
+            MaterialPage(
+              key: const ValueKey('/protected'),
+              child: RouteGuard.stream(
+                canActivate: guardStream,
+                onRedirect: (ctx) {},
+                loadingWidget: const Scaffold(body: Text('Loading...')),
+                errorWidgetBuilder: (error, stackTrace) =>
+                    Scaffold(body: Text('Error: $error')),
+                child: const Scaffold(body: Text('Protected Content')),
+              ),
+            ),
+          ],
+          _ => <Page<void>>[],
+        },
+      ],
+      onDidRemovePage: (page) {},
     );
   }
 }
